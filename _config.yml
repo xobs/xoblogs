@@ -10,7 +10,7 @@ pygments: true
 # so be sure to set them if your theme uses them.
 #
 title : Xoblogs
-tagline: Thingy
+tagline: Notes from the bare metal
 author :
   name : Sean "xobs" Cross
   email : xobs@xoblo.gs
