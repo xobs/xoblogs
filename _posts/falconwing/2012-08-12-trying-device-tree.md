@@ -33,7 +33,7 @@ Compile the kernel, then compile the DTS file and append it to the zImage:
 
 To be sure the device tree data gets used, I modified the linux_prep code
 to not pass any atags.  To do this, I edited linux_prep/core/entry.S and
-changed the final "mov r2, r0" in _start to "mov r2, #0".
+changed the final "mov r2, r0" in \_start to "mov r2, #0".
 
 Cycle everything again and boot the kernel.  It starts up, but fails to
 recognize the root filesystem.  It's also very confused about the lack of
