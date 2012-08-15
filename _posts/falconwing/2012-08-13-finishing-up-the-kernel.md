@@ -37,3 +37,12 @@ Then, add the following attribute to the usbctrl definition:
 
     vbus-supply = <&reg_usbctrl_vbus>;
 
+Now when the system boots USB will come up.  Case closed.
+
+Or is it?  I've made some noise on the linux-usb mailing list asking for the
+best way to permanently fix the problem.  There have been responses from
+some of the chip designers, and a nice discussion has been going.  It's a
+great example of open-source in action.
+
+For now, I'm going to take a break from the port to allow this problem to be
+solved.
