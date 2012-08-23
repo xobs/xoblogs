@@ -4,43 +4,59 @@ category : firmware
 tags : [falconwing, linux, kernel, booting]
 ---
 
-There are a large-but-finite number of processors supported by the Linux
-kernel.  Many different processor families and memory controllers make up
-the 700-megabyte download.  Frequently when bringing up Linux on an
-unfamiliar piece of hardware, much of the code required to boot the device
-already exists, it just needs to be tied together.  This series will follow
-me trying to port the Linux "master" branch to the chumby Hacker Board,
-which runs a Freescale i.MX233 SoC and is known as "Falconwing".
+Before we get into the mechanics of the bootloader, we want to make sure
+that there's a glimmer of hope for our board being supported.  Once we've
+established that, we can duplicate a similar device, come up with a machine
+ID for our board, compile a new kernel, and then figure out how to load the
+new kernel image.
 
-Note that I'll be using a hardcoded machine type here, rather than going for
-a device tree implementation.  This is because I don't want to modify the
-bootloader to support passing device tree data.  I could statically link a
-platform-specific device tree, but that would be no different from using the
-old mach-based approach, so there doesn't seem to be an advantage there.
+Obtaining the kernel
+--------------------
+The primary, latest, bleeding-edge kernel is called linux-next.  You can
+[browse the
+repository](http://git.kernel.org/?p=linux/kernel/git/next/linux-next.git;a=summary)
+over HTTP, but we'll want to check it out to develop locally.  On your
+development machine, run the following to pull down a copy of the kernel:
 
-I'm going to assume you have an ARM toolchain installed.  I'm using one that
-was generated in OpenEmbedded.  It's available [for
-download](http://kosagi.progress.sg/kovan/angstrom-eglibc-x86_64-armv5te-v2012.07-core-toolchain.tar.bz2)
-for 64-bit Intel Linux, but any toolchain will work.  I have the
-environment variable "ARCH" set to "arm", and "CROSS_COMPILE" set to
-"arm-angstrom-linux-gnueabi-" which makes kernel compilation easier:
+    git clone git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
 
-    export CROSS_COMPILE=arm-angstrom-linux-gnueabi-
-    export ARCH=arm
+The kernel is made up of about 700 megabytes of patches, commit notes, and
+documentation.  It takes a long time to collect the files and send them
+down the wire.  A common suggestion is to go grab a coffee.  Or bake a
+cake, and then eat it.  I've seen it take ten hours to download over a slow
+connection, but fifteen minutes is a more reasonable estimate.
+
+Verifying processor support
+---------------------------
 
 The very first step in bringing up Linux on a new ARM platform is to make
-sure your processor is supported.  If not, you've got a much harder road
-ahead of you.  If it is supported, even partially, then you can avoid much
-of the pain that comes with bringing up a new memory controller.  I found my
-processor -- the i.MX233 -- goes by the name "mxs" in Linux:
+sure your processor is supported.  A large chunk of the arch/arm/ directory
+is dedicated to various architectures, so chances are very good that at
+least the core IRQ and memory manager is supported.  If not, you've got a
+much harder road ahead of you.
+
+By simply using "grep", I found my processor -- the i.MX233 -- goes by the
+architecture name "mxs" in Linux:
 
     smc@build-ssd:~/linux/arch/arm$ grep -ir mx23 mach-* | cut -d/ -f1 | uniq -c
           6 mach-mmp
         678 mach-mxs
     smc@build-ssd:~/linux/arch/arm$ 
 
+The mention of the machine in *mach-mmp* is probably more of a fluke, as
+speaking from experience I know that to be a Marvell platform.  However,
+further investigation (i.e. poking around the files in that directory)
+reveals that mach-mxs does, in fact, support the i.MX233 processor.
+
+Registering our machine
+------------------------
+Currently, every single platform that can boot Linux gets assigned a unique
+ID, known as a *machine ID*.  This ID tells the kernel which kind of
+machine it's running on, and allows it to enable or disable certain
+features based on what it knows about that particular machine.
+
 Armed with the knowledge that this processor is supported, we can go about
-registering a new platform.  This can be done on the [ARM Linux
+registering a new machine ID.  This can be done on the [ARM Linux
 Registry](http://www.arm.linux.org.uk/developer/machines/) page, and is a
 very quick and painless process.  It will assign a machine ID you can use to
 boot your board.  You will need to fill in the "directory suffix" using the
@@ -53,50 +69,92 @@ will allow us to use our new machine type:
 
     wget -O arch/arm/tools/mach-types http://www.arm.linux.org.uk/developer/machines/download.php
 
-Now to add our machine to the kernel.  Edit arch/arm/mach-mxs/Kconfig,
-duplicate the MACH_MX23EVK entry, and change its name to match your Kconfig
-macro.  I copied the entire entry and changed the config line to read
-"config MACH_FALCONWING", and changed the text entry to match.  Since my
-board doesn't have a framebuffer I removed MXS_HAVE_PLATFORM_MXSFB.
+Adding our machine to the kernel
+--------------------------------
+Now that we have a machine ID, we need to modify the kernel to take
+advantage of it.  We'll need to create a new machine definition file to
+describe our board's peripherals, update the makefile to compile our new
+definition file, and update the Kconfig file to allow us to enable support
+for our board.  Because our platform is based on the i.MX233, we might as
+well copy the MX23EVK machine file, because it probably contains a baseline
+of features that our device should support.
 
-Since we're changing the machine name, we also have to come up with a new
-board definition file.  This file includes a MACHINE_START macro, and is the
-initial point where machine-specific code is run, including adding various
-machine-specific devices.  Edit Makefile and notice the following line:
+Copy the MX23EVK's machine definition file:
 
-    obj-$(CONFIG_MACH_MX23EVK) += mach-mx23evk.o
-
-A good guess would be that the MX23 EVK board we're copying has its
-MACHINE_START defined in the file mach-mx23evk.c.  I want to copy this
-wholesale, so I added the following line beneath it:
-
-    obj-$(CONFIG_MACH_FALCONWING) += mach-falconwing.o
-
-Now, create the machine definition file by duplicating an existing one.  I
-just copied mach-mx23evk.c to mach-falconwing.c.  Open it and modify the
-MACHINE_START line to reclect the new name.  In my case I changed it to
-read:
+    cp arch/arm/mach-mxs/mach-mx23evk.c arch/arm/mach-mxs/mach-falconwing.c
+    
+Open our copied file and modify the MACHINE_START macro to reflect the new
+name.  This is the *machine type* entry from the Arm Linux Registry,
+followed by a string that describes the machine.
 
     MACHINE_START(FALCONWING, "Falconwing Board")
 
 Later on we'll modify this file to change various function names around, and
-reflect the actual devices present on our board, but for now this should be
-good enough to get things running.
+reflect the actual peripherals present on our board, but for now this
+should be good enough to get things running.
 
-Armed with a platform ID and a kernel config entry, we can start configuring
+Edit arch/arm/mach-mxs/Makefile and duplicate the entry for mach-mx23evk.o.
+For my platform, I added the following line to the Makefile:
+
+    obj-$(CONFIG_MACH_FALCONWING) += mach-falconwing.o
+
+
+Edit arch/arm/mach-mxs/Kconfig, duplicate the entire MACH_MX23EVK entry,
+and change its name to match the Kconfig macro handed out by the ARM Linux
+Registry.  On my platform, I changed the name to read "config
+MACH_FALCONWING".
+
+Configuring the compiler
+------------------------
+I'm going to assume you have an ARM toolchain installed.  I'm using one that
+was generated in OpenEmbedded, using the "bitbake meta-toolchain" command.
+There are several toolchains available, particularly from vendors such as
+[CodeSourcery
+Lite](http://www.mentor.com/embedded-software/sourcery-tools/sourcery-codebench/editions/lite-edition/).
+Really, just about any Linux toolchain will work so long as it's GCC and is
+of a reasonably recent vintage.
+
+Cross-compiling the kernel is actually really easy.  First, obtain the base
+name for your compiler.  For example, my compiler is called
+"arm-angstrom-linux-gnueabi-gcc", so the base name would be
+"arm-angstrom-linux-gnueabi-".  Then, set the following environment
+variables:
+
+    export CROSS_COMPILE=[basename]
+    export ARCH=arm
+
+So on my system, I have the following set:
+
+    export CROSS_COMPILE=arm-angstrom-linux-gnueabi-
+    export ARCH=arm
+
+Configuring the kernel
+----------------------
+Now that the machine definition is set, we can start configuring
 Linux to match our board.  Frequently, a default configuration file is
 available that will at least partially configure your board.  These are
 located under the "arch/arm/configs" directory.  By searching for "mxs", I
-was able to discover that there was a default config file for my processor
+was able to discover that there is a default config file for my processor
 called "mxs_defconfig".  Given that, go to the root of the Linux directory
 and run:
 
     make mxs_defconfig
 
 Since the default config doesn't know about our board, we'll have to go in
-and enable it.  Go to the "System Type" menu.  You
-should see your platform on the list.  Enable it, then exit the kernel menu
-config and save your changes.  Do a test compile to verify everything works.
+and enable it.  Enter the kernel menu-based configuration by running:
+
+    make menuconfig
+    
+Go to the "System Type" menu.  You should see your new platform on the
+list.  Enable it, then exit the config system and save your changes.
+
+Compiling the kernel
+--------------------
+By this point, we have the basics in place.  We have a basic machine set
+up, we have a new machine ID, and we have a configured kernel.  We're
+pretty sure the kernel won't actually do anything once booted, but hey, we
+need to get it to compile before it'll run, right?
+
 Since the environment variables for ARCH and CROSS_COMPILE are already set,
 I can just type "make".  However, I want to speed up compilation on this
 8-core machine, so I run the following to build everything nice and
