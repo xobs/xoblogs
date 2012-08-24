@@ -10,7 +10,8 @@ Firmware prompt for fun.  Running "dev /" and then "ls" would display a
 list of all devices on the system, along with their addresses and
 compatible drivers.  Device Tree is a similar mechanism for ARM, wherein a
 binary structure describing hardware components is passed to the kernel at
-boot, either as part of the Atags or at the end of the kernel image.
+boot, either as part of the Atags or at the end of the kernel image.  It
+should make bringing up a board very easy, so let's give it a try.
 
 Getting started with device tree
 --------------------------------
