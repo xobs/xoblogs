@@ -1,6 +1,6 @@
 ---
 layout: post
-category : firmware
+category : sdcard
 tags : [falconwing, booting]
 ---
 The bootloader has the potential to either be very easy to work with, or a

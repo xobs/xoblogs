@@ -1,6 +1,6 @@
 ---
 layout: post
-category : firmware
+category : sdcard
 tags : [falconwing, linux, kernel, booting]
 ---
 

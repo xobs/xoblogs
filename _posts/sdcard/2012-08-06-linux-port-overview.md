@@ -1,9 +1,8 @@
 ---
 layout: post
-category : firmware
+category : sdcard
 tags : [falconwing, overview]
 ---
-{% include JB/setup %}
 
 Bringing up Linux on a new board isn't nearly as difficult as it used to be.
 In the past, you'd have to port code for the IRQ handler, memory manager,

@@ -1,9 +1,8 @@
 ---
 layout: post
-category : firmware
+category : sdcard
 tags : [falconwing, linux, kernel, booting]
 ---
-{% include JB/setup %}
 
 I've never done anything with Device Tree before.  The closest I've come is
 back when I was a PowerPC Macintosh user, and I would enter the Open

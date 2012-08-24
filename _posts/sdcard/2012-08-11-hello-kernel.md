@@ -1,9 +1,8 @@
 ---
 layout: post
-category : firmware
+category : sdcard
 tags : [falconwing, linux, kernel, booting]
 ---
-{% include JB/setup %}
 
 Since we're still trying to get the kernel up and running, we're going to
 stick with the default Falconwing root filesystem for now.  Later on we'll
