@@ -2,7 +2,7 @@ body {
     background-color: white;
     font: 9pt Verdana, helvetica, arial, clean, sans-serif;
     *font-size: small;
-    background: #111;
+    background: #ddd;
 }
 
 a {
@@ -12,7 +12,6 @@ a {
 
 .content p a, .content ul a {
     color: #9E8ADF;
-	background: #150251;
     font-weight: bold;
 }
 
@@ -28,7 +27,6 @@ p {
     text-align: left;
     padding: 8px 15px;
     line-height: 19px;
-    color: white;
 }
 
 /*
@@ -131,7 +129,7 @@ ul.posts span {
 }
 
 .content {
-	background: #150251;
+	background: #fff;
 }
 
 .white {
@@ -139,6 +137,15 @@ ul.posts span {
 }
 
 .links a, .links a:hover {
+    color: #000;
+	text-align: center;
+    font-size: 80%;
+	display: block;
+	padding: 3px;
+	background: #82DEB9;
+}
+
+.omega a, .omega a:hover {
     color: #000;
 	text-align: center;
     font-size: 80%;
@@ -161,19 +168,19 @@ h2 {
 	text-align: left;
 	border-bottom: 2px solid #333;
 	margin: 10px 15px;
-    color: #48DEA2;
-}
-
-h2 a {
     color: #25684D;
 }
 
+h2 a {
+    color: #005130;
+}
+
 h3{
-  font-family: "Helvetica", "Arial", "Futura", sans-serif;
-	padding: 10px;
+    font-family: "Helvetica", "Arial", "Futura", sans-serif;
+	padding: 5px;
 	font-size: 15px;
 	font-weight: bold;
-  font-size: 16px;
+    font-size: 16px;
 }
 
 #post h3{ margin-left: 5px; }
@@ -182,10 +189,11 @@ h3{
 #resources, #novena, #sdcard, #other, #recent {
     color: #005130;
     background-color: #48DEA2;
+    border-top-left-radius: 10px 10px;
+    border-top-right-radius: 10px 10px;
 }
 #recent { 
 	text-align: center;
-	padding: 0 0 5px; 
 	color: #005130;
 }
   
@@ -258,7 +266,7 @@ blockquote p { margin: 0; padding: 0; }
 
 pre {
     border: 1px solid #ddd;
-    background-color: #AE9AEF;
+    background-color: #9E8ADF;
     padding: 0 .4em;
     text-align: left; 
     font-size: 90%;
@@ -268,7 +276,7 @@ pre {
   
 code {
     border: 1px solid #ddd;
-    background-color: #AE9AEF;
+    background-color: #9E8ADF;
     font-size: 95%;
     padding: 0 .2em;
 }
@@ -293,7 +301,6 @@ code {
 	list-style-type: disc;
 	text-align: left;
 	margin-left: 40px;
-    color: #ffffff;
 }
 
 #post li {

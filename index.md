@@ -14,9 +14,7 @@ tagline: Notes on various projects
 </div>
 <div class="grid_2 omega">
   <h3 id="recent">Recent posts</h3>
-  <ul class="recent">
   {% for post in site.posts limit: 7 %}
-    <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+    <a href="{{ post.url }}">{{ post.title }}</a>
   {% endfor %}
-  </ul>
 </div>
