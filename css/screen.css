@@ -58,6 +58,8 @@ p {
     padding: 10px;
     border: 2px solid #aaa;
     background: #eee;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 
@@ -81,7 +83,11 @@ p {
 }
 
 .recent a{ color: #AED180; } 
-.recent a:hover { color: #FFE3A3; text-decoration: underline; background: none; }
+.recent a:hover {
+    color: #FFE3A3;
+    text-decoration: underline;
+    background: none;
+}
 
 ul.posts span {
     font-family: "Helvetica", "Arial", "Futura", sans-serif;
@@ -145,6 +151,11 @@ ul.posts span {
 	background: #82DEB9;
 }
 
+.links a:hover
+{
+	background: #AED180;
+}
+
 .omega a, .omega a:hover {
     color: #000;
 	text-align: center;
@@ -156,10 +167,6 @@ ul.posts span {
 
 .links h3 { text-align: center; }
 
-.links a:hover
-{
-	background: #AED180;
-}
 
 h2 {
 	padding: 10px;
@@ -175,10 +182,9 @@ h2 a {
     color: #005130;
 }
 
-h3{
+h3 {
     font-family: "Helvetica", "Arial", "Futura", sans-serif;
 	padding: 5px;
-	font-size: 15px;
 	font-weight: bold;
     font-size: 16px;
 }
@@ -192,6 +198,22 @@ h3{
     border-top-left-radius: 10px 10px;
     border-top-right-radius: 10px 10px;
 }
+
+.link_title a:hover {
+    background-color: #48DEA2;
+    color: #005130;
+	font-weight: bold;
+    font-size: 16px;
+	background: #AED180;
+}
+
+.link_title a {
+    background-color: #48DEA2;
+    color: #005130;
+	font-weight: bold;
+    font-size: 16px;
+}
+    
 #recent { 
 	text-align: center;
 	color: #005130;
