@@ -154,6 +154,11 @@ div.links {
     margin-bottom: 10px;
 }
 
+.category {
+    font-size: 8pt;
+    color: #888;
+}
+
 
 .links h3 { text-align: center; }
 
