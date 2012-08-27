@@ -10,6 +10,11 @@ a {
     text-decoration: none;
 }
 
+.content {
+	background: #fff;
+    margin-bottom: 10px;
+}
+
 .content p a, .content ul a {
     color: #9E8ADF;
     font-weight: bold;
@@ -62,32 +67,16 @@ p {
     margin-right: auto;
 }
 
+#resources {
+    margin-top: 10px;
+}
+
 
 /*****************************************************************************/
 /*
 /* Home
 /*
 /*****************************************************************************/
-
-.recent {
-    list-style-type: square;
-    list-style-position: outside;
-    color: #FFFEE6;
-    padding-left: 9px;
-    font-size: 95%;
-    text-align: left;
-}
-
-.recent li {
-    margin-bottom: 5px;
-}
-
-.recent a{ color: #AED180; } 
-.recent a:hover {
-    color: #FFE3A3;
-    text-decoration: underline;
-    background: none;
-}
 
 ul.posts span {
     font-family: "Helvetica", "Arial", "Futura", sans-serif;
@@ -134,10 +123,6 @@ ul.posts span {
 	margin-top: 5px;
 }
 
-.content {
-	background: #fff;
-}
-
 .white {
 	background: #FFFFFF;
 }
@@ -151,11 +136,6 @@ ul.posts span {
 	background: #82DEB9;
 }
 
-.links a:hover
-{
-	background: #AED180;
-}
-
 .omega a, .omega a:hover {
     color: #000;
 	text-align: center;
@@ -164,6 +144,16 @@ ul.posts span {
 	padding: 3px;
 	background: #82DEB9;
 }
+
+.links a:hover
+{
+	background: #AED180;
+}
+
+div.links {
+    margin-bottom: 10px;
+}
+
 
 .links h3 { text-align: center; }
 
@@ -214,11 +204,6 @@ h3 {
     font-size: 16px;
 }
     
-#recent { 
-	text-align: center;
-	color: #005130;
-}
-  
 .title a.extra:hover {
 	color: black;
 }
