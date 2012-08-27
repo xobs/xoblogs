@@ -36,13 +36,13 @@
       {% endfor %}
     </div>
     <div class="grid_2 links">
-      <h3 id="other">Raspberry Pi</h3>
+      <h3 class="link_title" id="rpi"><a href="/rpi.html">Raspberry Pi</a></h3>
       {% for post in site.categories.rpi reversed %}
         <a href="{{ post.url }}">{{ post.title }}</a>
       {% endfor %}
     </div>
     <div class="grid_2 suffix_2 links">
-      <h3 id="other">Other</h3>
+      <h3 class="link_title" id="other">Other</h3>
       {% for post in site.posts reversed %}
       {% if post.category != 'sdcard' and post.category != 'novena' and post.category != 'rpi' %}
         <a href="{{ post.url }}">{{ post.title }}</a>

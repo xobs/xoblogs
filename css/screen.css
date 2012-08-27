@@ -187,7 +187,7 @@ h3 {
 #post h3{ margin-left: 5px; }
 
 
-#resources, #novena, #sdcard, #other, #recent {
+#resources, #novena, #sdcard, #other, #recent, #rpi {
     color: #005130;
     background-color: #48DEA2;
     border-top-left-radius: 10px 10px;
