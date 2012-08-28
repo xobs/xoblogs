@@ -1,0 +1,337 @@
+body {
+    background-color: white;
+    font: 9pt Verdana, helvetica, arial, clean, sans-serif;
+    *font-size: small;
+    background: #ddd;
+}
+
+a {
+    color: #8A003D;
+    text-decoration: none;
+}
+
+.content {
+	background: #fff;
+    margin-bottom: 10px;
+}
+
+.content p a, .content ul a {
+    color: #9E8ADF;
+    font-weight: bold;
+}
+
+.content p a:hover, .content ul a:hover {
+    color: #fff;
+    background: #000;
+}
+
+a:visited {
+}
+
+p {
+    text-align: left;
+    padding: 8px 15px;
+    line-height: 19px;
+}
+
+/*
+#disqus {
+    background: #DEE6CF;
+    padding: 10px;
+}
+
+#dsq-content {
+    width: 575px;
+}
+
+#feedburner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    margin: 0;
+}
+*/
+
+#date {
+    text-align: center;
+    color: #87314C;
+    font-size: 80%;
+    font-weight: bold;
+}
+
+#post img {
+    padding: 10px;
+    border: 2px solid #aaa;
+    background: #eee;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#resources {
+    margin-top: 10px;
+}
+
+
+/*****************************************************************************/
+/*
+/* Home
+/*
+/*****************************************************************************/
+
+ul.posts span {
+    font-family: "Helvetica", "Arial", "Futura", sans-serif;
+    font-size: 80%;
+}
+
+/*****************************************************************************/
+/*
+/* Site
+/*
+/*****************************************************************************/
+
+
+.title {
+    margin: 20px 0;
+}
+
+.title h1 {
+    display:inline;
+}
+
+.title h1 a {
+    color: #D30043;
+    font-weight: normal;
+    margin-bottom: 20px;
+    font-size: 36pt;
+    font-family: "Helvetica", "Arial", "Futura", sans-serif;
+}
+
+.info div {
+	text-align: right;
+}
+
+.info .extra {
+    color: #aaa;
+    text-decoration: none;
+	margin-top: 35px;
+    font-size: 16px;
+}
+
+.info .author {
+	color: #fff;
+	font-size: 11px;
+	margin-top: 5px;
+}
+
+.white {
+	background: #FFFFFF;
+}
+
+.links a, .links a:hover {
+    color: #000;
+	text-align: center;
+    font-size: 80%;
+	display: block;
+	padding: 3px;
+	background: #82DEB9;
+}
+
+.omega a, .omega a:hover {
+    color: #000;
+	text-align: center;
+    font-size: 80%;
+	display: block;
+	padding: 3px;
+	background: #82DEB9;
+}
+
+.links a:hover
+{
+	background: #AED180;
+}
+
+div.links {
+    margin-bottom: 10px;
+}
+
+.category {
+    font-size: 8pt;
+    color: #888;
+}
+
+
+.links h3 { text-align: center; }
+
+
+h2 {
+	padding: 10px;
+	font-size: 21px;
+	font-weight: normal;
+	text-align: left;
+	border-bottom: 2px solid #333;
+	margin: 10px 15px;
+    color: #25684D;
+}
+
+h2 a {
+    color: #005130;
+}
+
+h3 {
+    font-family: "Helvetica", "Arial", "Futura", sans-serif;
+	padding: 5px;
+	font-weight: bold;
+    font-size: 16px;
+}
+
+#post h3{ margin-left: 5px; }
+
+
+#resources, #novena, #sdcard, #other, #recent, #rpi {
+    color: #005130;
+    background-color: #48DEA2;
+    border-top-left-radius: 10px 10px;
+    border-top-right-radius: 10px 10px;
+}
+
+.link_title a:hover {
+    background-color: #48DEA2;
+    color: #005130;
+	font-weight: bold;
+    font-size: 16px;
+	background: #AED180;
+}
+
+.link_title a {
+    background-color: #48DEA2;
+    color: #005130;
+	font-weight: bold;
+    font-size: 16px;
+}
+    
+.title a.extra:hover {
+	color: black;
+}
+
+.meta {
+    color: #aaa;
+}
+
+.footer {
+    color: #666;
+    margin-top: 1em;
+    overflow: hidden;
+    clear: both;
+	text-align: center;
+}
+
+.footer a {
+	color: #AED180;
+	font-size: 16px;
+	display:inline-block;
+	padding: 10px;
+    font-family: "Helvetica", "Arial", "Futura", sans-serif;
+}
+
+.footer a:hover {
+	color: #E3DF8A;
+	text-decoration: underline;
+}
+
+
+.footer .languages span, .footer .languages a {
+	padding: 0;
+	font-size: 12px;
+}
+
+.footer .languages {
+	margin-bottom: 15px;
+}
+/*****************************************************************************/
+/*
+/* Posts
+/*
+/*****************************************************************************/
+
+#more { 
+    margin: 10px 0; 
+    padding: 3px; 
+    display:block; 
+    font-size: 13px; 
+    font-weight: bold;
+}
+
+/* standard */
+  
+
+blockquote {
+    font: 14px/22px normal helvetica, sans-serif;
+    margin: 10px 50px;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-left: 5px solid #ccc;
+    background-color: #eef;
+} 
+
+blockquote p { margin: 0; padding: 0; }
+
+pre {
+    border: 1px solid #ddd;
+    background-color: #9E8ADF;
+    padding: 0 .4em;
+    text-align: left; 
+    font-size: 90%;
+    margin: 0 15px;
+    overflow: hidden;
+}
+  
+code {
+    border: 1px solid #ddd;
+    background-color: #9E8ADF;
+    font-size: 95%;
+    padding: 0 .2em;
+}
+  
+#post pre code {
+    border: none;
+}
+    
+  /* terminal */
+  
+#post pre.terminal {
+    border: 1px solid black;
+    background-color: #333;
+    color: white;
+}
+  
+#post pre.terminal code {
+    background-color: #333;
+}
+
+#post ul, #post ol {
+	list-style-type: disc;
+	text-align: left;
+	margin-left: 40px;
+}
+
+#post li {
+    margin-bottom: 3px;
+}
+
+
+#related {
+    margin-top: 2em;
+}
+
+#related h2 {
+    margin-bottom: 1em;
+}
+
+.survey {
+    font-size: 90%;
+    text-align: center;
+    padding: 5px;
+    background: #AED180;
+    margin-bottom: 20px;
+}
