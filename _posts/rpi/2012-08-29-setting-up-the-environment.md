@@ -172,7 +172,7 @@ Now, copy the kernel image over.  I just use scp:
     smc@build-ssd:~/rpi/adafruit-raspberrypi-linux$
 
 Then, on the Pi, load and run the new image:
-    kexec -l Image ; kexec -e
+    kexec -l Image --command=line="$(cat /proc/cmdline)" ; kexec -e
 
 And that's it.  Now we have the ability to compile a new kernel, load the
 new kernel, and figure out where problems are coming from.  Next up:
