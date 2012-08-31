@@ -278,7 +278,7 @@ blockquote p { margin: 0; padding: 0; }
 
 pre {
     border: 1px solid #ddd;
-    background-color: #9E8ADF;
+    background-color: #BEAAEF;
     padding: 0 .4em;
     text-align: left; 
     font-size: 90%;
@@ -288,7 +288,7 @@ pre {
   
 code {
     border: 1px solid #ddd;
-    background-color: #9E8ADF;
+    background-color: #BEAAEF;
     font-size: 95%;
     padding: 0 .2em;
 }
@@ -309,8 +309,13 @@ code {
     background-color: #333;
 }
 
-#post ul, #post ol {
+#post ul {
 	list-style-type: disc;
+	text-align: left;
+	margin-left: 40px;
+}
+#post ol {
+	list-style-type: decimal;
 	text-align: left;
 	margin-left: 40px;
 }
