@@ -161,11 +161,23 @@ Add the corresponding removal call to the cleanup:
 
     sysfs_remove_group(&rpi_pwm_dev->kobj, &rpi_pwm_attribute_group);
 
-Compile and load your module.  If all goes well, you should be able to
-change to /sys/class/rpi-pwm/pwm0 and see the usual sysfs entries, plus a
-new one called "hello".  If you cat this file, it should report to you the
-message "Hello there!".  If you write data into this file, it should appear
-under "dmesg | tail".  This will be our basis for talking to the kernel.
+Testing the sysfs Entries
+-------------------------
+Compile and load your module.  If all goes well, you should have a new
+directory under /sys/class/ with the same name as your device class.
+Furthermore, under the class subdirectory should be your device.  Finally,
+under the device subdirectory you should see your *hello* file alongside
+the usual sysfs device files.
+
+Try examining the contents of this *hello* file:
+    root@raspberrypi:/sys/class/rpi-pwm/pwm0# cat hello
+    Hello there!
+    root@raspberrypi:/sys/class/rpi-pwm/pwm0#
+Try echoing data into the file and examining the syslog:
+    root@raspberrypi:/sys/class/rpi-pwm/pwm0# echo -n testdata > hello
+    root@raspberrypi:/sys/class/rpi-pwm/pwm0# dmesg | grep testdata
+    [  349.660000] Got data: testdata
+    root@raspberrypi:/sys/class/rpi-pwm/pwm0#
 
 What's Next
 -----------
@@ -173,6 +185,8 @@ We haven't done anything here that's specific to the PWM.  In fact, we've
 just created a generic module that doesn't really do anything interesting
 except exist.  If you've checked all errors and clean up everything
 correctly, you should be able to load and unload your driver all day
-without leaking any data.
+without leaking any data.  This is the basis for rapidly developing new
+features: Incremental updates that don't break existing functionality, yet
+add new features.
 
-Next we'll get around to actually making the PWM do something.
+Next time we'll get around to actually making the PWM do something.
