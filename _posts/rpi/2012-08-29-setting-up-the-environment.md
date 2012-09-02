@@ -121,7 +121,7 @@ is at that offset.
 
 Sure enough, movw is an ARMv7 instruction that somehow snuck into our
 kernel image.  It probably came as part of the CFLAGS environment variable,
-which gets set by the toolchain.  Sure enough, this seems to be the case:
+which gets set by the toolchain.  This does seem to be the case:
 
     smc@build-ssd:~/rpi/adafruit-raspberrypi-linux$ echo $CFLAGS
     -march=armv7-a -fno-tree-vectorize -mthumb-interwork -mfloat-abi=softfp
@@ -129,7 +129,7 @@ which gets set by the toolchain.  Sure enough, this seems to be the case:
     --sysroot=/usr/local/oecore-x86_64/sysroots/armv7a-angstrom-linux-gnueabi
 
 After replacing -march=armv7-a with -march=armv6, and removing the -mtune
-line, we finally have a kernel that can be built!
+line, we finally can build a working kernel.
 
 
 Trying Out the New Kernel
@@ -138,11 +138,11 @@ The Broadcom CPU reads the file /boot/kernel.img and then boots it.  To
 replace the kernel, you replace that file.  Rather straightforward, but it
 requires you to pull the SD card out of the Pi, plug it into a computer,
 copy the file, and move it back.  That's a lot of effort, and requires
-movement.
+physical movement.
 
-Fortunately, the kernel comes with kexec, so it's possible to load a new
-kernel without rebooting.  That makes development oh so much easier.
-First, ensure the kexec program is installed:
+Fortunately, the kernel comes with kexec enabled, so it's possible to load
+a new kernel without rebooting.  That makes development oh so much easier.
+To take advantage of it, first ensure the kexec program is installed:
 
     root@raspberrypi:~# apt-get install kexec-tools
     Reading package lists... Done
@@ -171,7 +171,7 @@ Now, copy the kernel image over.  I just use scp:
     Image                                         100% 6175KB   6.0MB/s   00:01
     smc@build-ssd:~/rpi/adafruit-raspberrypi-linux$
 
-Then, on the Pi, load and run the new image:
+Then on the Pi, load and run the new image:
     root@raspberrypi:~# kexec -l Image --command=line="$(cat /proc/cmdline)" ; kexec -e
 
 And that's it.  Now we have the ability to compile a new kernel, load the
