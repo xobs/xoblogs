@@ -188,21 +188,10 @@ doing dev work.  Fortunately we're using Angstrom, so it should be a simple
 matter of "opkg install".  Update the list of packages:
     opkg update
 
-Then install the basic compiler toolchain (and a whole mess of required
-perl modules):
+Then install the basic compiler toolchain:
     opkg install libc6-dev openssl-dev libcurl-dev curl curl-dev perl-dev \
-                 perl-module-base perl-module-warnings \
-                 perl-module-utf8 perl-module-extutils-makemaker \
-                 perl-module-extutils-makemaker-config \
-                 perl-module-extutils-makemaker-yaml \
-                 perl-module-config perl-module-list-util-pp \
-                 perl-module-warnings-register perl-module-carp \
-                 perl-module-file-path perl-module-file-spec \
-                 perl-module-file-find perl-module-overload \
-                 perl-module-extutils-mm-unix perl-module-dirhandle \
-                 perl-module-symbol perl-module-scalar-util \
-                 perl-module-scalar-util-pp perl-module-b \
-                 gcc-symlinks binutils gcc g++ make 
+                 perl-dev perl-modules python-modules \
+                 util-linux gcc-symlinks binutils gcc g++ make 
 
 Fix symlinks that don't really work.  For example, "ar" is linked to the
 limited busybox version rather than the full GCC one.  Correct that:
