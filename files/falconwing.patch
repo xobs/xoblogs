@@ -1,0 +1,215 @@
+From 33fa1a84ada1c5941f8c1c757ebb545fc12dfaa7 Mon Sep 17 00:00:00 2001
+From: Sean Cross <xobs@kosagi.com>
+Date: Wed, 3 Oct 2012 14:50:31 +0800
+Subject: [PATCH 1/4] falconwing: Add device tree file
+
+---
+ arch/arm/boot/dts/imx23-falconwing.dts |  104 ++++++++++++++++++++++++++++++++
+ 1 files changed, 104 insertions(+), 0 deletions(-)
+ create mode 100644 arch/arm/boot/dts/imx23-falconwing.dts
+
+diff --git a/arch/arm/boot/dts/imx23-falconwing.dts b/arch/arm/boot/dts/imx23-falconwing.dts
+new file mode 100644
+index 0000000..e49fb62
+--- /dev/null
++++ b/arch/arm/boot/dts/imx23-falconwing.dts
+@@ -0,0 +1,104 @@
++/*
++ * Copyright 2012 Freescale Semiconductor, Inc.
++ *
++ * The code contained herein is licensed under the GNU General Public
++ * License. You may obtain a copy of the GNU General Public License
++ * Version 2 or later at the following locations:
++ *
++ * http://www.opensource.org/licenses/gpl-license.html
++ * http://www.gnu.org/copyleft/gpl.html
++ */
++
++/dts-v1/;
++/include/ "imx23.dtsi"
++
++/ {
++	model = "Falconwing Hacker Board";
++	compatible = "kosagi,chb", "fsl,imx23"; 
++	memory {
++		reg = <0x40000000 0x04000000>;
++	};
++
++	apb@80000000 {
++		apbh@80000000 {
++			ssp0: ssp@80010000 {
++				compatible = "fsl,imx23-mmc";
++				pinctrl-names = "default";
++				pinctrl-0 = <&mmc0_8bit_pins_a &mmc0_pins_fixup>;
++				bus-width = <8>;
++				vmmc-supply = <&reg_vddio_sd0>;
++				status = "okay";
++			};
++
++		};
++
++		apbx@80040000 {
++			pwm: pwm@80064000 {
++				pinctrl-names = "default";
++				pinctrl-0 = <&pwm2_pins_a>;
++				status = "okay";
++			};
++
++			auart0: serial@8006c000 {
++				pinctrl-names = "default";
++				pinctrl-0 = <&auart0_pins_a>;
++				status = "okay";
++			};
++
++			duart: serial@80070000 {
++				pinctrl-names = "default";
++				pinctrl-0 = <&duart_pins_a>;
++				status = "okay";
++			};
++
++			usbphy: usbphy@8007c000 {
++				compatible = "fsl,imx23-usbphy", "fsl,imx28-usbphy";
++				reg = <0x8007c000 0x2000>;
++				status = "okay";
++			};
++                        audio-out@80048000 {
++				compatible = "fsl,mxs-audio-sgtl5000";
++				audio-code = "pcm";
++                                reg = <0x80048000 2000>;
++                                status = "okay";
++                        };
++
++		};
++	};
++
++	regulators {
++		compatible = "simple-bus";
++
++		reg_vddio_sd0: vddio-sd0 {
++			compatible = "regulator-fixed";
++			regulator-name = "vddio-sd0";
++			regulator-min-microvolt = <3300000>;
++			regulator-max-microvolt = <3300000>;
++			gpio = <&gpio1 29 0>;
++		};
++
++		reg_usbctrl_vbus: usbctrl_vbus {
++			compatible = "regulator-fixed";
++			regulator-name = "usbctrl_vbus";
++			regulator-min-microvolt = <5000000>;
++			regulator-max-microvolt = <5000000>;
++			regulator-boot-on;
++			regulator-always-on;
++			gpio = <&gpio0 29 0>;
++			enable-active-high;
++		};
++
++	};
++
++	ahb@80080000 {
++		usbctrl@80080000 {
++			reg = <0x80080000 0x10000>;
++			compatible = "fsl,imx27-usb", "fsl,imx27-usb";
++			interrupts = <11>;
++			fsl,usbphy = <&usbphy>;
++			vbus-supply = <&reg_usbctrl_vbus>;
++			status = "okay";
++		};
++	};
++
++};
+-- 
+1.7.0.4
+
+
+From 3553b78ea7623c04b9fffa6a98b9ca5d3822b8b0 Mon Sep 17 00:00:00 2001
+From: Sean Cross <xobs@kosagi.com>
+Date: Wed, 3 Oct 2012 14:50:54 +0800
+Subject: [PATCH 2/4] clk-imx23: Add USB clocks
+
+These clocks are used by the USB system, and should be added alongside
+the other clocks present in the i.MX23 definition file.
+---
+ drivers/clk/mxs/clk-imx23.c |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+
+diff --git a/drivers/clk/mxs/clk-imx23.c b/drivers/clk/mxs/clk-imx23.c
+index 844043a..b29c678 100644
+--- a/drivers/clk/mxs/clk-imx23.c
++++ b/drivers/clk/mxs/clk-imx23.c
+@@ -196,6 +196,8 @@ int __init mx23_clocks_init(void)
+ 	clk_register_clkdevs(clks[ssp], ssp_lookups, ARRAY_SIZE(ssp_lookups));
+ 	clk_register_clkdevs(clks[gpmi], gpmi_lookups, ARRAY_SIZE(gpmi_lookups));
+ 	clk_register_clkdevs(clks[lcdif], lcdif_lookups, ARRAY_SIZE(lcdif_lookups));
++	clk_register_clkdev(clks[usb_pwr], NULL, "8007c000.usbphy");
++	clk_register_clkdev(clks[usb], NULL, "80080000.usbctrl");
+ 
+ 	for (i = 0; i < ARRAY_SIZE(clks_init_on); i++)
+ 		clk_prepare_enable(clks[clks_init_on[i]]);
+-- 
+1.7.0.4
+
+
+From e82d113355e4ff46569e69e82a81c490f0c8fc64 Mon Sep 17 00:00:00 2001
+From: Sean Cross <xobs@kosagi.com>
+Date: Wed, 3 Oct 2012 14:51:52 +0800
+Subject: [PATCH 3/4] mxs-mmc: Add hack to disable write protect detect
+
+Write protection is not a feature on this card, so we need to disable
+its support entirely.  This is a platform-specific hack and should not
+be used on any other platform.
+---
+ drivers/mmc/host/mxs-mmc.c |    3 +--
+ 1 files changed, 1 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/mmc/host/mxs-mmc.c b/drivers/mmc/host/mxs-mmc.c
+index a51f930..8a2cbb8 100644
+--- a/drivers/mmc/host/mxs-mmc.c
++++ b/drivers/mmc/host/mxs-mmc.c
+@@ -187,8 +187,7 @@ static int mxs_mmc_get_cd(struct mmc_host *mmc)
+ {
+ 	struct mxs_mmc_host *host = mmc_priv(mmc);
+ 
+-	return !(readl(host->base + HW_SSP_STATUS(host)) &
+-		 BM_SSP_STATUS_CARD_DETECT);
++	return 1;
+ }
+ 
+ static void mxs_mmc_reset(struct mxs_mmc_host *host)
+-- 
+1.7.0.4
+
+
+From d3c6a6336c97a41324aa858ecdee31c3ff24add3 Mon Sep 17 00:00:00 2001
+From: Sean Cross <xobs@kosagi.com>
+Date: Wed, 3 Oct 2012 14:52:43 +0800
+Subject: [PATCH 4/4] mxs-phy: Disable USB disconnect detect
+
+There is a bug in the USB PHY on the i.MX23 that will cause a disconnect
+event to occur immediately after a connect event.  The workaround is to
+disable disconnect detect for a certain amount of time (usually 1-2s)
+before re-enabling it.
+
+Instead of doing that, we simply disable disconnect detect.  That's because
+the root hub is permanently activated on our board, and so can't ever be
+disconnected.
+---
+ drivers/usb/otg/mxs-phy.c |    2 --
+ 1 files changed, 0 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/usb/otg/mxs-phy.c b/drivers/usb/otg/mxs-phy.c
+index c1a67cb..23eeae6 100644
+--- a/drivers/usb/otg/mxs-phy.c
++++ b/drivers/usb/otg/mxs-phy.c
+@@ -81,8 +81,6 @@ static int mxs_phy_on_connect(struct usb_phy *phy, int port)
+ 	dev_dbg(phy->dev, "Connect on port %d\n", port);
+ 
+ 	mxs_phy_hw_init(to_mxs_phy(phy));
+-	writel_relaxed(BM_USBPHY_CTRL_ENHOSTDISCONDETECT,
+-			phy->io_priv + HW_USBPHY_CTRL_SET);
+ 
+ 	return 0;
+ }
+-- 
+1.7.0.4
+
