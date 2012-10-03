@@ -107,4 +107,20 @@ but I'll proceed as if it had.
 
 Fixing MMC
 ----------
-Still working on this one.
+Still working on this one.  For now, I'm going to leave my hack in place.
+Since I only need this for a quick hack, I'm going to just say that for
+now, it's okay.
+
+
+Final Output
+------------
+I've wrapped up the changes I've made in a single patchfile called
+[falconwing.patch](/files/falconwing.patch).  It contains the new Device
+Tree definition for the Falconwing board, as well as patches for the MMC
+card, the USB PHY, and USB clocks.  It can be applied to revision
+fea7a08acb13524b47711625eebea40a0ede69a0 of Linux.
+
+Future work will be done with this kernel, but for now we've essentially
+got what we're looking for: A board with a lot of GPIOs running a recent
+version of Linux.  Next up, we need to get actual hardware working.
+is stored 
